@@ -1,3 +1,5 @@
+> **Also in this repo: [NASSAU: Pirate Republic](nassau/README.md)**, a single-player, turn-based captain-politician game set in Nassau in 1718 (Vite + React + TypeScript, runs entirely in the browser). `cd nassau && npm install && npm run dev`.
+
 # Harbor Compact
 
 **One city. Three sides. One economy.**
