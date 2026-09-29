@@ -454,7 +454,7 @@ export const EVENTS: Record<string, EventDef> = {
     weight: 2,
     cooldown: 8,
     speaker: (s) => (has(s, 'beaumont') ? 'beaumont' : has(s, 'hawkins') ? 'hawkins' : undefined),
-    eligible: (s) => playerDistricts(s).length >= 2,
+    eligible: (s) => !!pickSellable(s),
     body: (s) => {
       const d = pickSellable(s);
       return `A Charter Company factor in a spotless coat presents a letter sealed in gold wax. The Company wishes to purchase ${d ? DISTRICTS[d].name : 'one of your districts'} “at a fair price, in the interests of order and commerce.”\n\nHe adds, quietly, that the Governor looks kindly on men who sell to the Company.`;
@@ -806,8 +806,9 @@ export const EVENTS: Record<string, EventDef> = {
 };
 
 function pickSellable(s: GameState): DistrictId | undefined {
-  const mine = playerDistricts(s).filter((d) => d !== 'rumrow');
-  return mine.find((d) => d === 'salt') ?? mine.find((d) => d !== 'docks') ?? mine[0];
+  // Never the Docks (the Company holding them is a loss condition) or your home turf.
+  const mine = playerDistricts(s).filter((d) => d !== 'rumrow' && d !== 'docks');
+  return mine.find((d) => d === 'salt') ?? mine[0];
 }
 
 export const RANDOM_EVENTS = Object.values(EVENTS).filter((e) => e.random);
